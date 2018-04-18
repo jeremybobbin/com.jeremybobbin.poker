@@ -10,9 +10,8 @@ import models.Table;
 public class Poker {
   public static void main(String[] args) {
 //    Card card = new Card(Rank.TWO, Suit.SPADES);
-    Table table = new Table(26);
-    Set<Player> players = table.getPlayers();
-    players.stream()
-        .forEach(System.out::println);
+    Table table = new Table(2);
+    System.out.println("Now playing.");
+    table.play();
   }
 }

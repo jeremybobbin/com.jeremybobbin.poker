@@ -1,15 +1,9 @@
 package models;
 import models.Card.*;
 
-import static models.Card.Suit.values;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 public class Deck {
   private List<Card> cards;
 
@@ -24,7 +18,9 @@ public class Deck {
   }
 
   public Card pick() {
-    return cards.remove(0);
+    Card card =  cards.remove(0);
+    System.out.println("Now removing: " + card);
+    return card;
   }
 
   public List<Card> getCards() {

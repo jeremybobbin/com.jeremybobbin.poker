@@ -4,7 +4,6 @@ package models;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -24,10 +23,6 @@ public class Table {
     for (int i = 0; i < playerCount; i++) {
       players.add(new Player(100));
     }
-  }
-
-  public Set<Player> getPlayers() {
-    return players;
   }
 
   public void addMoney(int money) {
@@ -53,7 +48,7 @@ public class Table {
     }
   }
 
-  private void play() {
+  public void play() {
     long playersWithMoney = players.stream()
         .filter(player -> player.getStack() > 0)
         .count();
@@ -69,25 +64,21 @@ public class Table {
   }
 
   private void iterate() {
+    players.forEach(Player::resetPotShare);
     while (getActivePlayers().size() >= 2) {
       deal();
       do {
         List<Player> activePlayers = getActivePlayers();
         activePlayers.stream()
             .filter(Player::isAllIn)
-            .forEach(player -> promptPlayer(player));
+            .forEach(this::promptPlayer);
       } while (playersStillOwe());
     }
   }
 
   private boolean playersStillOwe() {
     return players.stream()
-        .anyMatch(player -> {
-          if (player.getCostToPlay() > 0) {
-            return true;
-          }
-          return false;
-        });
+        .anyMatch(player -> player.getCostToPlay() > 0);
   }
 
 
@@ -99,7 +90,7 @@ public class Table {
     player.setCostToPlay(highestPotShare - player.getStack());
   }
 
-  public void promptPlayer(Player player) {
+  private void promptPlayer(Player player) {
     costToPlay(player);
     //User interface goes here
     if (player.isAllIn()) {
@@ -109,12 +100,14 @@ public class Table {
     switch (uiResponse) {
       case "fold":
         player.setActive(false);
+        break;
       case "call":
         player.charge(0);
+        break;
       default:
         int betAmount = Integer.parseInt(uiResponse);
         player.charge(betAmount);
-
+        break;
     }
   }
 }

@@ -1,12 +1,10 @@
 package models;
 
-import java.util.Arrays;
 
 public class Player {
   private boolean isActive;
   private Hand hand;
   private int stack;
-  private boolean hasDealerButton;
   private int potShare;
   private int costToPlay;
 
@@ -18,14 +16,8 @@ public class Player {
 
   public Player(int stack) {
     this.stack = stack;
-  }
-
-  public boolean hasDealerButton() {
-    return hasDealerButton;
-  }
-
-  public void toggleDealerButton() {
-    hasDealerButton = !hasDealerButton;
+    hand = new Hand();
+    isActive = true;
   }
 
   public void setActive(boolean v) {
